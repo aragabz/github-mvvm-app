@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.ragabz.githubapp.data.local.entities.GithubRepoEntity
+-keep class com.ragabz.githubapp.data.remote.models.GithubRepoNetworkModel
+-keep class com.ragabz.githubapp.models.GithubRepo
+-keep class  com.ragabz.githubapp.** { *; }

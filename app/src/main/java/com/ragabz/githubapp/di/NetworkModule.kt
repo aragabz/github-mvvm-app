@@ -5,8 +5,10 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.moczul.ok2curl.CurlInterceptor
 import com.ragabz.githubapp.BuildConfig
+import com.ragabz.githubapp.data.remote.interceptors.AuthenticationInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,12 +46,6 @@ object NetworkModule {
         return CurlInterceptor { message -> Timber.v("Ok2Curl $message") }
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideAuthenticationInterceptor(dataManager: DataManager): AuthenticationInterceptor {
-//        return AuthenticationInterceptor(dataManager)
-//    }
-
     /**
      * provide OkHttpClient
      */
@@ -59,15 +55,15 @@ object NetworkModule {
         loggingInterceptor: HttpLoggingInterceptor,
         chuckerInterceptor: ChuckerInterceptor,
         curlInterceptor: CurlInterceptor,
-        /*authenticationInterceptor: AuthenticationInterceptor*/
+        authenticationInterceptor: AuthenticationInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             if (BuildConfig.DEBUG) {
                 addInterceptor(curlInterceptor)
                 addInterceptor(chuckerInterceptor)
-                addInterceptor(loggingInterceptor)
+//                addInterceptor(loggingInterceptor)
             }
-//            addInterceptor(authenticationInterceptor)
+            addInterceptor(authenticationInterceptor)
             connectTimeout(TIME_OUT, TimeUnit.MINUTES)
             readTimeout(TIME_OUT, TimeUnit.MINUTES)
             writeTimeout(TIME_OUT, TimeUnit.MINUTES)
@@ -79,8 +75,6 @@ object NetworkModule {
     @Singleton
     fun provideGson(): Gson {
         return GsonBuilder()
-            .setLenient()
-            .serializeNulls() // to allow sending null values
             .create()
     }
 
@@ -96,6 +90,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.base_url)
             .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
             .build()
     }
