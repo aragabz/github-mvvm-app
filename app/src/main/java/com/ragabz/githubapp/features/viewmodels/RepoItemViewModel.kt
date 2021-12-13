@@ -1,8 +1,7 @@
-package com.ragabz.githubapp.features
+package com.ragabz.githubapp.features.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.ragabz.githubapp.data.remote.models.GithubRepoNetworkModel
-import com.ragabz.githubapp.models.GithubRepo
+import com.ragabz.githubapp.domain.models.GithubRepo
 
 class RepoItemViewModel(private val githubRepo: GithubRepo) : ViewModel() {
 

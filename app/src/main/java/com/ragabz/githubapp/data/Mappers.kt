@@ -2,14 +2,31 @@ package com.ragabz.githubapp.data
 
 import com.ragabz.githubapp.data.local.entities.GithubRepoEntity
 import com.ragabz.githubapp.data.remote.models.GithubRepoNetworkModel
-import com.ragabz.githubapp.models.GithubRepo
+import com.ragabz.githubapp.domain.models.GithubRepo
 import timber.log.Timber
 
 fun GithubRepoEntity.toModel(): GithubRepo = GithubRepo(
     id = this.id,
     archived = this.archived,
-    createdAt = this.createdAt,
+    createdAt = this.createdAt ?:"",
     description = this.description,
+    forks = this.forks,
+    forksCount = this.forksCount,
+    fullName = this.fullName,
+    gitUrl = this.gitUrl,
+    language = this.language ?: "",
+    name = this.name,
+    stargazersCount = this.stargazersCount,
+    updatedAt = this.updatedAt,
+    url = this.url,
+    watchersCount = this.watchersCount
+)
+
+fun GithubRepoNetworkModel.mapToModel(): GithubRepo = GithubRepo(
+    id = this.id,
+    archived = this.archived,
+    createdAt = this.createdAt?: "",
+    description = this.description ?: "",
     forks = this.forks,
     forksCount = this.forksCount,
     fullName = this.fullName,
@@ -48,4 +65,6 @@ fun List<GithubRepoNetworkModel>.toEntity(): List<GithubRepoEntity> {
     return this.map { it.toEntity() }
 }
 
-fun List<GithubRepoEntity>.toModel() = this.map { it.toModel() }
+fun List<GithubRepoEntity>.toModel(): List<GithubRepo> = this.map { it.toModel() }
+
+fun List<GithubRepoNetworkModel>.toModelList(): List<GithubRepo> = this.map { it.mapToModel() }

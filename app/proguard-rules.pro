@@ -22,5 +22,5 @@
 
 -keep class com.ragabz.githubapp.data.local.entities.GithubRepoEntity
 -keep class com.ragabz.githubapp.data.remote.models.GithubRepoNetworkModel
--keep class com.ragabz.githubapp.models.GithubRepo
+-keep class com.ragabz.githubapp.domain.models.GithubRepo
 -keep class  com.ragabz.githubapp.** { *; }

@@ -1,4 +1,4 @@
-package com.ragabz.githubapp.models
+package com.ragabz.githubapp.domain.models
 
 data class ErrorModel(
     var message: String = "",
